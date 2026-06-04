@@ -1,9 +1,13 @@
 package br.com.gsr.corporate_file_processor.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "customer")
 public class CustomerEntity {
