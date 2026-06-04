@@ -2,6 +2,7 @@ package br.com.gsr.corporate_file_processor.watcher;
 
 import br.com.gsr.corporate_file_processor.config.FileProcessorProperties;
 import br.com.gsr.corporate_file_processor.service.CsvReaderService;
+import br.com.gsr.corporate_file_processor.service.FileProcessingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,7 +17,7 @@ import java.nio.file.*;
 public class FileWatcherService implements ApplicationListener<ApplicationReadyEvent>{
 
     private final FileProcessorProperties properties;
-    private final CsvReaderService csvReaderService;
+    private final FileProcessingService fileProcessingService;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -42,7 +43,7 @@ public class FileWatcherService implements ApplicationListener<ApplicationReadyE
                            log.info("New file detected: {}", fileName);
 
                            try {
-                               csvReaderService.read(inputDir.resolve(fileName));
+                                fileProcessingService.process(inputDir.resolve(fileName));
                            } catch (Exception e) {
                                throw new RuntimeException(e);
                            }

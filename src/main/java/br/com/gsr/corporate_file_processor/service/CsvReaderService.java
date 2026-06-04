@@ -6,25 +6,39 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
 public class CsvReaderService {
 
     public List<CsvRecord> read(Path filePath) throws IOException {
-        try (Reader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
-            CsvToBean<CsvRecord> csvToBean = new CsvToBeanBuilder<CsvRecord>(reader)
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(filePath), StandardCharsets.UTF_8))) {
+            bufferedReader.mark(1);
+
+            if (bufferedReader.read() != '\uFEFF') {
+                bufferedReader.reset();
+            }
+
+            CsvToBean<CsvRecord> csvToBean = new CsvToBeanBuilder<CsvRecord>(bufferedReader)
                     .withType(CsvRecord.class)
+                    .withSeparator(';')
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 
-            return csvToBean.parse();
+            List<CsvRecord> records = csvToBean.parse();
+
+            IntStream.range(0, records.size()).forEach(i -> records.get(i).setLineNumber(i + 2));
+
+            return records;
         }
     }
 }
