@@ -1,5 +1,6 @@
 package br.com.gsr.corporate_file_processor.service;
 
+import br.com.gsr.corporate_file_processor.config.FileProcessorProperties;
 import br.com.gsr.corporate_file_processor.dto.CsvRecord;
 import br.com.gsr.corporate_file_processor.enums.FileProcessStatusEnum;
 import br.com.gsr.corporate_file_processor.model.Customer;
@@ -13,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileProcessingService {
 
+    private final FileProcessorProperties properties;
     private final CsvReaderService csvReaderService;
     private final CsvRecordValidator csvRecordValidator;
     private final FileProcessRepository fileProcessRepository;
@@ -77,6 +81,16 @@ public class FileProcessingService {
         savedFile.setFailedRecords(failedRecords);
 
         fileProcessRepository.update(savedFile);
+
+        Path destination;
+
+        if (successRecords > 0) {
+            destination = Path.of(properties.getDirectories().getProcessed()).resolve(filePath.getFileName());
+        } else {
+            destination = Path.of(properties.getDirectories().getError()).resolve(filePath.getFileName());
+        }
+
+        Files.move(filePath, destination, StandardCopyOption.REPLACE_EXISTING );
 
         log.info("Finished processing of file: {}", filePath.getFileName());
     }
