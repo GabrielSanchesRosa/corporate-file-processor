@@ -6,6 +6,8 @@ import br.com.gsr.corporate_file_processor.repository.mapper.ProcessErrorReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ProcessErrorRepository {
@@ -19,5 +21,15 @@ public class ProcessErrorRepository {
         ProcessError saved = processErrorRepositoryMapper.toModel(processErrorJpaRepository.save(entity));
 
         return saved;
+    }
+
+    public List<ProcessError> findAll() {
+        List<ProcessErrorEntity> entities = processErrorJpaRepository.findAll();
+
+        return processErrorRepositoryMapper.toModel(entities);
+    }
+
+    public Long countErrors() {
+        return processErrorJpaRepository.count();
     }
 }
