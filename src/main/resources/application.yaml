@@ -23,6 +23,6 @@ management:
 
 file-processor:
   directories:
-    input: C:/input
-    processed: C:/processed
-    error: C:/error
+    input: C:/Corporate file processor/input
+    processed: C:/Corporate file processor/processed
+    error: C:/Corporate file processor/error
