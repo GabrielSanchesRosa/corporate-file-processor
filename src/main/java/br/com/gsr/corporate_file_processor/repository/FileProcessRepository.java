@@ -6,6 +6,10 @@ import br.com.gsr.corporate_file_processor.repository.mapper.FileProcessReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class FileProcessRepository {
@@ -25,5 +29,27 @@ public class FileProcessRepository {
         FileProcessEntity entity = fileProcessRepositoryMapper.toEntity(savedFile);
 
         fileProcessJpaRepository.save(entity);
+    }
+
+    public List<FileProcess> findAll() {
+        List<FileProcessEntity> entities = fileProcessJpaRepository.findAll();
+
+        return fileProcessRepositoryMapper.toModel(entities);
+    }
+
+    public Optional<FileProcess> findById(UUID id) {
+        return fileProcessJpaRepository.findById(id).map(fileProcessRepositoryMapper::toModel);
+    }
+
+    public Long sumSuccessRecords() {
+        return fileProcessJpaRepository.sumSuccessRecords();
+    }
+
+    public Double avgProcessingTime() {
+        return fileProcessJpaRepository.avgProcessingTime();
+    }
+
+    public Long count() {
+        return fileProcessJpaRepository.count();
     }
 }
