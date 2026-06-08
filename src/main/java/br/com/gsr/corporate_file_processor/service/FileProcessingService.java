@@ -6,6 +6,7 @@ import br.com.gsr.corporate_file_processor.enums.FileProcessStatusEnum;
 import br.com.gsr.corporate_file_processor.model.Customer;
 import br.com.gsr.corporate_file_processor.model.FileProcess;
 import br.com.gsr.corporate_file_processor.model.ProcessError;
+import br.com.gsr.corporate_file_processor.notification.EmailNotificationService;
 import br.com.gsr.corporate_file_processor.repository.CustomerRepository;
 import br.com.gsr.corporate_file_processor.repository.FileProcessRepository;
 import br.com.gsr.corporate_file_processor.repository.ProcessErrorRepository;
@@ -31,6 +32,7 @@ public class FileProcessingService {
     private final FileProcessRepository fileProcessRepository;
     private final CustomerRepository customerRepository;
     private final ProcessErrorRepository processErrorRepository;
+    private final EmailNotificationService emailNotificationService;
 
     public void process(Path filePath) throws IOException {
         log.info("Starting processing of file: {}", filePath.getFileName());
@@ -91,6 +93,12 @@ public class FileProcessingService {
         }
 
         Files.move(filePath, destination, StandardCopyOption.REPLACE_EXISTING );
+
+        if (failedRecords > 0) {
+            emailNotificationService.sendErrorNotification(filePath.getFileName().toString(), failedRecords);
+        }
+
+        emailNotificationService.sendProcessingSummary(filePath.getFileName().toString(), records.size(), successRecords, failedRecords);
 
         log.info("Finished processing of file: {}", filePath.getFileName());
     }

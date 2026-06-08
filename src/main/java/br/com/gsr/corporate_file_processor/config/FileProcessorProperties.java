@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class FileProcessorProperties {
 
     private Directories directories;
+    private String notificationEmail;
 
     @Data
     public static class Directories {
