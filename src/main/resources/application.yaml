@@ -15,8 +15,26 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health, info, metrics
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+file-processor:
+  directories:
+    input: ${FILE_PROCESSOR_INPUT_DIR:./files/input}
+    processed: ${FILE_PROCESSOR_PROCESSED_DIR:./files/processed}
+    error: ${FILE_PROCESSOR_ERROR_DIR:./files/error}
+
+  notification-email: ${NOTIFICATION_EMAIL:recipient@email.com}
