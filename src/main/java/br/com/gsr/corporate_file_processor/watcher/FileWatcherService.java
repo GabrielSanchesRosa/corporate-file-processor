@@ -1,7 +1,6 @@
 package br.com.gsr.corporate_file_processor.watcher;
 
 import br.com.gsr.corporate_file_processor.config.FileProcessorProperties;
-import br.com.gsr.corporate_file_processor.service.CsvReaderService;
 import br.com.gsr.corporate_file_processor.service.FileProcessingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

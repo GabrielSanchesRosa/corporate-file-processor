@@ -5,8 +5,6 @@ import br.com.gsr.corporate_file_processor.model.Dashboard;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
-import java.util.List;
-
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface DashboardControllerMapper {
 

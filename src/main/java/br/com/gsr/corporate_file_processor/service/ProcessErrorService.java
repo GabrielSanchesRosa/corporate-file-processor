@@ -1,10 +1,8 @@
 package br.com.gsr.corporate_file_processor.service;
 
-import br.com.gsr.corporate_file_processor.entity.ProcessErrorEntity;
 import br.com.gsr.corporate_file_processor.model.ProcessError;
 import br.com.gsr.corporate_file_processor.repository.ProcessErrorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
