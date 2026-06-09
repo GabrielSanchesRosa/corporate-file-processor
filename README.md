@@ -163,7 +163,7 @@ Schema is version-controlled via Flyway (`V1`, `V2`, `V3`). The application neve
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/corporate-file-processor.git
+git clone https://github.com/GabrielSanchesRosa/corporate-file-processor
 cd corporate-file-processor
 
 # 2. Start PostgreSQL (Flyway runs automatically on app startup)

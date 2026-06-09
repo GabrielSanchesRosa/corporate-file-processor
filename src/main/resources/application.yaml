@@ -33,8 +33,8 @@ spring:
 
 file-processor:
   directories:
-    input: C:/Corporate file processor/input
-    processed: C:/Corporate file processor/processed
-    error: C:/Corporate file processor/error
+    input: ${FILE_PROCESSOR_INPUT_DIR:./files/input}
+    processed: ${FILE_PROCESSOR_PROCESSED_DIR:./files/processed}
+    error: ${FILE_PROCESSOR_ERROR_DIR:./files/error}
 
-  notification-email: recipient@email.com
+  notification-email: ${NOTIFICATION_EMAIL:recipient@email.com}
