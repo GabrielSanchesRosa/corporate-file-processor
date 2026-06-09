@@ -161,16 +161,25 @@ Schema is version-controlled via Flyway (`V1`, `V2`, `V3`). The application neve
 
 **Prerequisites:** Java 21+, Docker Desktop
 
+### Option 1 — Full Docker (everything containerized)
+
+```bash
+git clone https://github.com/GabrielSanchesRosa/corporate-file-processor
+cd corporate-file-processor
+docker compose up --build
+```
+
+### Option 2 — Local development (database in Docker, app via Maven)
+
 ```bash
 # 1. Clone
 git clone https://github.com/GabrielSanchesRosa/corporate-file-processor
 cd corporate-file-processor
 
-# 2. Start PostgreSQL (Flyway runs automatically on app startup)
-docker compose up -d
+# 2. Start PostgreSQL
+docker compose up postgres -d
 
-# 3. Create local config
-# src/main/resources/application-local.yaml
+# 3. Create src/main/resources/application-local.yaml
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/corporate_file_processor
