@@ -10,6 +10,31 @@ services:
       POSTGRES_PASSWORD: root
     volumes:
       - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d corporate_file_processor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: corporate-file-processor-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/corporate_file_processor
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      FILE_PROCESSOR_INPUT_DIR: /files/input
+      FILE_PROCESSOR_PROCESSED_DIR: /files/processed
+      FILE_PROCESSOR_ERROR_DIR: /files/error
+    volumes:
+      - files_data:/files
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+  files_data:
